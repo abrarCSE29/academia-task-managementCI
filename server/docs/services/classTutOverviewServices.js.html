@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: classTutOverviewServices.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: classTutOverviewServices.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import Teacher from '../models/Teacher.js';
+
+/**
+ * Retrieves course overview data for a specified teacher, including progress metrics and status.
+ * @param {string} teacherId - The ID of the teacher whose course overview data is to be fetched.
+ * @returns {Promise&lt;object[]>} An array of objects representing course details, 
+ * progress metrics, and status.
+ * @throws {Error} Throws an error if no course data is available or 
+ * if there is an issue loading the data.
+ */
+
+const getCourseOverviewData = async (teacherId) => {
+  try {
+
+    const teacher = await Teacher.findById(teacherId).populate('courses');
+
+    console.log(teacher);
+    // Retrieve courses for a specific teacher
+    const courses = teacher.courses;
+
+    if (!courses.length) {
+      throw new Error('No course data available');
+    }
+
+    // Calculate progress and format response data
+    return courses.map((course) => {
+      // eslint-disable-next-line max-len
+      const classCompletionPercentage = (course.noOfClassesTaken / course.expectedNoOfClasses) * 100;
+      // eslint-disable-next-line max-len
+      const tutorialCompletionPercentage = (course.noOfTutorialsTaken / course.expectedNoOfTutorials) * 100;
+      // eslint-disable-next-line max-len
+      const overallProgressPercentage = (classCompletionPercentage + tutorialCompletionPercentage) / 2;
+
+      // Determine qualitative progress status
+      let progressStatus;
+
+      if (overallProgressPercentage >= 90) {
+        progressStatus = 'Excellent';
+      } else if (overallProgressPercentage >= 70) {
+        progressStatus = 'Very good';
+      } else if (overallProgressPercentage >= 50) {
+        progressStatus = 'Good';
+      } else if (overallProgressPercentage >= 30) {
+        progressStatus = 'Bad';
+      } else {
+        progressStatus = 'Very bad';
+      }
+
+      return {
+        courseDetails: {
+          courseName: course.courseName,
+          courseCode: course.courseCode,
+          courseCredit: course.courseCredit,
+          courseType: course.courseType,
+          contactHours: course.contactHours,
+        },
+        expectedNoOfClasses: course.expectedNoOfClasses,
+        noOfClassesTaken: course.noOfClassesTaken,
+        expectedNoOfTutorials: course.expectedNoOfTutorials,
+        noOfTutorialsTaken: course.noOfTutorialsTaken,
+        progressStatus,
+      };
+    });
+  } catch (error) {
+    throw new Error(error.message || 'Unable to load class and tutorial overview.');
+  }
+};
+
+export default { getCourseOverviewData };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addExamCommitteeMember">addExamCommitteeMember</a></li><li><a href="global.html#createBoard">createBoard</a></li><li><a href="global.html#createNewCourse">createNewCourse</a></li><li><a href="global.html#createSemester">createSemester</a></li><li><a href="global.html#createTask">createTask</a></li><li><a href="global.html#deleteBoard">deleteBoard</a></li><li><a href="global.html#deleteCourse">deleteCourse</a></li><li><a href="global.html#deleteTask">deleteTask</a></li><li><a href="global.html#getAllBoards">getAllBoards</a></li><li><a href="global.html#getAllCourses">getAllCourses</a></li><li><a href="global.html#getAllSemesters">getAllSemesters</a></li><li><a href="global.html#getAllTasks">getAllTasks</a></li><li><a href="global.html#getAllTeachers">getAllTeachers</a></li><li><a href="global.html#getBoardByCourseId">getBoardByCourseId</a></li><li><a href="global.html#getBoardById">getBoardById</a></li><li><a href="global.html#getCourseById">getCourseById</a></li><li><a href="global.html#getCourseOverviewData">getCourseOverviewData</a></li><li><a href="global.html#getCoursesBySemester">getCoursesBySemester</a></li><li><a href="global.html#getCoursesByTeacherId">getCoursesByTeacherId</a></li><li><a href="global.html#getTaskById">getTaskById</a></li><li><a href="global.html#getTasks">getTasks</a></li><li><a href="global.html#getTasksByBoardAndStatus">getTasksByBoardAndStatus</a></li><li><a href="global.html#getTeacherById">getTeacherById</a></li><li><a href="global.html#updateBoard">updateBoard</a></li><li><a href="global.html#updateCourse">updateCourse</a></li><li><a href="global.html#updateSemester">updateSemester</a></li><li><a href="global.html#updateTask">updateTask</a></li><li><a href="global.html#updateTeacherCourses">updateTeacherCourses</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Nov 02 2024 16:43:35 GMT+0600 (Bangladesh Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

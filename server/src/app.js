@@ -8,8 +8,16 @@ import { connectMongoDB } from "./db.js";
 
 import { userRoutes } from "./routes/userRoutes.js";
 import { courseRoutes } from "./routes/courseRoutes.js";
+import { taskRoutes } from "./routes/taskRoutes.js";
+import { kanbanRoutes } from "./routes/kanbanRoutes.js";
+import { teacherRoutes } from "./routes/teacherRoutes.js";
+import { semesterRoutes } from "./routes/semesterRoutes.js";
+import { performanceRoutes } from "./routes/performanceRoutes.js";
+import { teacherDashboardRoutes } from "./routes/teacherDashboardRoutes.js";
+import { classTutOverviewRoutes } from "./routes/classTutOverviewRoutes.js";
 
 const app = express();
+
 
 app.use(express.json());
 app.use(helmet());
@@ -23,6 +31,18 @@ connectMongoDB();
 
 app.use("/api/users", userRoutes);
 app.use("/api/courses", courseRoutes);
+app.use("/api/teachers", teacherRoutes);
+app.use("/api/semesters", semesterRoutes);
+app.use("/api/tasks", taskRoutes);
+app.use("/api/kanban", kanbanRoutes);
+app.use("/api/teachers",  teacherRoutes);
+app.use("/api/semesters",  semesterRoutes);
+app.use("/api/performance", performanceRoutes);
+
+
+app.use("/api/teacher-dashboard", teacherDashboardRoutes);
+app.use('/api/class-overview', classTutOverviewRoutes);
+
 
 app.listen(config.app.port, () => {
   console.log(`Example app listening on port ${config.app.port}`);
