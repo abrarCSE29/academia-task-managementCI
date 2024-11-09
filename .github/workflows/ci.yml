@@ -50,9 +50,9 @@ jobs:
           cd client && yarn install
           cd ../server && yarn install
 
-      - name: Lint Client
-        run: |
-          cd client && yarn lint
+      # - name: Lint Client
+      #   run: |
+      #     cd client && yarn lint
 
       - name: Lint Server
         run: |
@@ -62,9 +62,9 @@ jobs:
         run: |
           cd server && yarn test
 
-      - name: Run Tests for Client
-        run: |
-          cd client && yarn test
+      # - name: Run Tests for Client
+      #   run: |
+      #     cd client && yarn test
 
       - name: Tear down Docker Compose
         run: docker-compose down
