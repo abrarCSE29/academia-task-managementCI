@@ -14,6 +14,7 @@ const getAllSemesters = async () => {
 };
 
 
+
 /**
  * Creates a new semester.
  * @param {object} semesterData - The data for the semester to create.
