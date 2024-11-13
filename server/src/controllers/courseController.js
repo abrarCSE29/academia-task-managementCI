@@ -6,6 +6,7 @@ import courseService from '../services/courseServices.js';
  * @param {object} res - The response object to send the result.
  * @returns {Promise<void>}
  */
+
 export const createNewCourse = async (req, res) => {
   try {
     const course = await courseService.createNewCourse(req.body);
